@@ -1,39 +1,34 @@
 "use client"
 import { Button } from '@/src/components/ui/button';
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
 
-import { LockIcon, Mail, User } from 'lucide-react';
+import { LockIcon, Mail} from 'lucide-react';
 import Link from 'next/link';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { loginAction } from './login.Action';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { loginUserData, loginUserSchema } from '@/src/validation/auth.validation';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
 
 const Login: React.FC = () => {
-  const [formData, setFormdata] = useState<LoginFormData>({
-    email: "",
-    password: "",
-  });
-  const handleInputChange = (name: string, value: string) => {
-    setFormdata((prev) => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-  console.log(formData)
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    try {
+    const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+    } = useForm({
+      resolver: zodResolver(loginUserSchema)});
 
-    } catch (error) {
+  // console.log(formData)
 
-    }
+  const onSubmit = async (data: loginUserData) => {
+    const result = await loginAction(data);
+    if (result.status === "SUCCESS") toast.success(result.message)
+    else toast.error(result.message)
   }
 
   return (
@@ -48,7 +43,7 @@ const Login: React.FC = () => {
         </CardAction> */}
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-6">
 
             <div className="grid gap-2">
@@ -57,34 +52,39 @@ const Login: React.FC = () => {
                 <Mail className='absolute top-1/2 transform -translate-y-1/2 left-3 w-4 h-4 text-gray-500' />
                 <Input
                   id="email"
-                  name="email"
                   type="email"
                   placeholder="Enter your email address"
                   required
-                  value={formData.email}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("email", e.target.value)}
-                  className='pl-10'
+                  {...register("email", {required: "Email is required"})}
+                   className={`focus-visible:border-green-500 focus-visible:ring-green-100 focus-visible:outline-none ${errors.email? "focus-visible:border-orange-500 focus-visible:ring-orange-100": ""} pl-10 !important`}
                 />
               </div>
+              {errors.email &&(
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
+            )}
             </div>
 
             <div className="grid gap-2">
               <Label htmlFor="password">Password *</Label>
               <div className='relative'>
                 <LockIcon className='absolute top-1/2 transform -translate-y-1/2 left-3 w-4 h-4 text-gray-500' />
-                <Input id="password" name='password' type="password" required placeholder='create a strong password'
-                  value={formData.password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("password", e.target.value)} className='pl-10' />
+                <Input id="password"  type="password" required placeholder='create a strong password' 
+                {...register("password", {required: "Password is required"})}
+                  className={`focus-visible:border-green-500 focus-visible:ring-green-100 focus-visible:outline-none ${errors.password? "focus-visible:border-orange-500 focus-visible:ring-orange-100": ""} pl-10 !important`}
+                />
               </div>
+              {errors.password &&(
+              <p className='text-sm text-destructive'>{errors.password.message}</p>
+            )}
             </div>
 
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
           </div>
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          Login
-        </Button>
         <CardDescription>
           If you have no account
           <Link href="/register" className='underline text-blue-500'> Register here</Link>

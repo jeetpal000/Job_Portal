@@ -1,58 +1,46 @@
 "use client"
 import { Button } from '@/src/components/ui/button';
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/components/ui/card';
 import { Input } from '@/src/components/ui/input';
 import { Label } from '@/src/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from '@/src/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
 import { User } from 'lucide-react';
 import Link from 'next/link';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import {registrationServer } from "../register/registrationServer.action"
+import { registrationServer } from "../register/registrationServer.action"
 import { toast } from 'sonner';
+import { Controller, useForm } from 'react-hook-form';
+import { registerUserData, registerUserSchema } from '@/src/validation/auth.validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
-
-interface RegistrationFormData {
-  name: string;
-  userName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  role: "applicant" | "employer"
-}
 
 const Register: React.FC = () => {
-  const [formData, setFormdata] = useState<RegistrationFormData>({
-    name: "",
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "applicant"
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerUserSchema)
   });
-  const handleInputChange = (name: string, value: string) => {
-    setFormdata((prev) => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-  const handleSubmit = async(e:FormEvent)=>{
-    e.preventDefault();
 
-    const registrationData = {
-      name: formData.name.trim(),
-      userName: formData.userName.trim(),
-      email: formData.email.trim(),
-      password: formData.password.trim(),
-      role: formData.role.trim(),
+const router = useRouter();
+
+  const onSubmit = async (data: registerUserData) => {
+    const result = await registrationServer(data);
+    if(result.status === "SUCCESS"){
+      if(data.role === "employer"){
+        router.push("/employer-dashboard")
+      }else{
+        router.push("/")
+      }
     }
-
-    if(formData.password !== formData.confirmPassword) return toast.error("Password is not matched")
-
-    const result = await registrationServer(registrationData);
-    if(result.status === "SUCCESS") toast.success(result.message)
-      else toast.error(result.message)
+    if (result.status === "SUCCESS") toast.success(result.message)
+    else toast.error(result.message)
   }
- 
+
+
+
 
   return (
     <Card className="w-full max-w-md m-auto">
@@ -61,12 +49,9 @@ const Register: React.FC = () => {
         <CardDescription className='text-center'>
           Create your account to get started
         </CardDescription>
-        {/* <CardAction>
-          <Button variant="link">Sign Up</Button>
-        </CardAction> */}
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit(onSubmit)} >
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="fullname">Full Name *</Label>
@@ -74,77 +59,67 @@ const Register: React.FC = () => {
                 <User className='absolute top-1/2 transform -translate-y-1/2 left-3 w-4 h-4' />
                 <Input
                   id="name"
-                  name="name"
                   type="text"
                   placeholder="Enter your full name"
                   required
-                  value={formData.name}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("name", e.target.value)}
+                  {...register("name")}
                   className='pl-10'
                 />
               </div>
+              {errors.name && (
+                <p className='text-sm text-destructive'>{errors.name.message}</p>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="userName">Username *</Label>
               <Input
                 id="userName"
-                name="userName"
                 type="text"
                 placeholder="choose a username"
                 required
-                value={formData.userName}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("userName", e.target.value)}
+                {...register("userName")}
+                className={`focus-visible:border-green-500 focus-visible:ring-green-100 focus-visible:outline-none ${errors.userName ? "focus-visible:border-orange-500 focus-visible:ring-orange-100" : ""} !important`}
               />
             </div>
+            {errors.userName && (
+              <p className='text-sm text-destructive'>{errors.userName.message}</p>
+            )}
             <div className="grid gap-2">
               <Label htmlFor="email">Email Address *</Label>
               <Input
                 id="email"
-                name="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="Enter you email"
                 required
-                value={formData.email}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("email", e.target.value)}
+                {...register("email")}
+                className="focus-visible:border-green-500 focus-visible:ring-green-100 focus-visible:outline-none !important"
               />
             </div>
-            <div>
-              <Label htmlFor="select">I am a *</Label>
-              <Select
-              name='role'
-                value={formData.role}
-                onValueChange={(value: "applicant" | "employer") => handleInputChange("role", value)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="job Applicant" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Job Applicant</SelectLabel>
-                    <SelectItem value="apple">Apple</SelectItem>
-                    <SelectItem value="banana">Banana</SelectItem>
-
-                  </SelectGroup>
-                  <SelectSeparator />
-                </SelectContent>
-              </Select>
-            </div>
+            {errors.email && (   
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
+            )}
+            <div> <Label htmlFor="role">I am a *</Label> <Controller name="role" control={control} rules={{ required: true }} render={({ field }) => (<Select onValueChange={field.onChange} value={field.value}> <SelectTrigger className="w-full"> <SelectValue placeholder="Select role" /> </SelectTrigger> <SelectContent> <SelectGroup> <SelectItem value="applicant">Applicant</SelectItem> <SelectItem value="employer">Employer</SelectItem> </SelectGroup> </SelectContent> </Select>)} /> {errors.role && (<p className="text-sm text-destructive">{errors.role.message}</p>)} </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password *</Label>
-              <Input id="password" name='password' type="password" required placeholder='create a strong password'
-                value={formData.password}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("password", e.target.value)} />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Confirm Password *</Label>
-              <Input id="password" name='confirmPassword' type="password" required placeholder='Comfirm your password'
-                value={formData.confirmPassword}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => handleInputChange("confirmPassword", e.target.value)}
+              <Input id="password" type="password" required placeholder='create a strong password'
+                {...register("password")}
               />
             </div>
-        <Button type="submit" className="w-full">
-          Create Account
-        </Button>
+            {errors.password && (
+              <p className='text-sm text-destructive'>{errors.password.message}</p>
+            )}
+            <div className="grid gap-2">
+              <Label htmlFor="password">Confirm Password *</Label>
+              <Input id="confirmPassword" type="password" required placeholder='Comfirm your password'
+                {...register("confirmPassword")}
+              />
+            </div>
+            {errors.confirmPassword && (
+              <p className='text-sm text-destructive'>{errors.confirmPassword.message}</p>
+            )}
+            <Button type="submit" className="w-full">
+              Create Account
+            </Button>
           </div>
         </form>
       </CardContent>

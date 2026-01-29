@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import { unique } from "next/dist/build/utils";
 
 // interface UserModel{
 //     name: string,
@@ -31,30 +30,39 @@ const Users = new mongoose.Schema({
     },
     role:{
         type: String,
+        required: true,
     }
     
 }, {timestamps: true});
 
 
+export const UserTable = mongoose.models.UserTable || mongoose.model("UserTable", Users);
 
 const SessionSchema = new mongoose.Schema({
-    UserId: {
-        type: String,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserTable",
+        required: true,
     },
     userAgent: {
         type: String,
+        required: true,
+    }, 
+    token:{
+        type: String,
+        required: true,
     },
     ip: {
         type: String,
+        required: true,
     },
     expireAt: {
         type: Date,
-        default: ()=>new Date(Date.now()+25*60*60*1000),
+        default: ()=>new Date(Date.now()+30*24*60*60*1000),
         index: {expires: 86400}
     }
 }, {timestamps: true});
 
 
-export const UserTable = mongoose.models.UserTable || mongoose.model("UserTable", Users);
 
 export const SessionTable = mongoose.models.SessionTable || mongoose.model("SessionTable", SessionSchema);
