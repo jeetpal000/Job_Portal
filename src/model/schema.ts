@@ -28,12 +28,17 @@ const Users = new mongoose.Schema({
         type: String,
         required: true,
     },
-    role:{
+    role: {
         type: String,
         required: true,
-    }
-    
-}, {timestamps: true});
+    },
+    avatarUrl: {
+        type: String,
+        // required: true,
+        trim: true,
+    },
+
+}, { timestamps: true });
 
 
 export const UserTable = mongoose.models.UserTable || mongoose.model("UserTable", Users);
@@ -47,8 +52,8 @@ const SessionSchema = new mongoose.Schema({
     userAgent: {
         type: String,
         required: true,
-    }, 
-    token:{
+    },
+    token: {
         type: String,
         required: true,
     },
@@ -58,11 +63,69 @@ const SessionSchema = new mongoose.Schema({
     },
     expireAt: {
         type: Date,
-        default: ()=>new Date(Date.now()+30*24*60*60*1000),
-        index: {expires: 86400}
+        default: () => new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        index: { expires: 86400 }
     }
-}, {timestamps: true});
+}, { timestamps: true });
 
 
 
 export const SessionTable = mongoose.models.SessionTable || mongoose.model("SessionTable", SessionSchema);
+
+
+
+
+
+
+const EmployerSchema = new mongoose.Schema({
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserTable",
+        required: true,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    email:{
+        type: String,
+        required: true,
+    },
+    companyname:{
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    bannerImageUrl: {
+        type: String,
+        // required: true,
+        trim: true,
+    },
+    organisationType: {
+        type: String,
+        required: true,
+    },
+    teamSize: {
+        type: String,
+        required: true,
+
+    },
+    yearOfEstablishment: {
+        type: String,
+        required: true,
+    },
+    websiteUrl: {
+        type: String,
+        // required: true,
+    },
+    location: {
+        type: String,
+        required: true,
+    },
+
+}, { timestamps: true })
+
+export const EmployerTable = mongoose.models.EmployerTable || mongoose.model("EmployerTable", EmployerSchema)

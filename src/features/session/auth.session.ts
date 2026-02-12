@@ -1,7 +1,9 @@
+"use server"
 import {cookies, headers} from "next/headers"
 import crypto from "crypto"
 import { getIPAddress } from "./locationIp";
 import { SessionTable } from "../../model/schema";
+import { redirect } from "next/navigation";
 
 
 type CreateSessionData = {
@@ -54,7 +56,6 @@ export const createSessionSetCookies = async(userId: string)=>{
 
 export const validationSessionAndGetUser = async (session: string)=>{
     const sessionDoc = await SessionTable.findOne({token: session}).populate("userId");
-    // console.log("sessionDoc", sessionDoc)
     if(!sessionDoc) return null;
 
     const user = sessionDoc.userId;
@@ -71,12 +72,29 @@ export const validationSessionAndGetUser = async (session: string)=>{
     };
 };
 
-export const inValidSession = async (id: string)=>{
+export const isValidSession = async (id: string)=>{
    await SessionTable.findByIdAndDelete(id);
-   console.log("session deleted:", id)
+//    console.log("session deleted:", id)
 }
 export const extendSession = async (id: string)=>{
     const newExpiry = new Date(Date.now()+30*24*60*60*1000);
     await SessionTable.findByIdAndUpdate(id, {expireAt: newExpiry});
-    console.log("Session expiry extended to", newExpiry)
+    // console.log("Session expiry extended to", newExpiry)
+}
+
+// logout user
+
+export const logoutUserAction = async() =>{
+     const cookieStore = await cookies();
+    const session = cookieStore.get("session")?.value;
+    
+
+    if(!session) return redirect("/login");
+    const sessionDoc = await SessionTable.findOne({token: session});
+
+    if(sessionDoc){
+        await isValidSession(sessionDoc._id)
+        cookieStore.delete("session");
+    }
+    return redirect("/login")
 }

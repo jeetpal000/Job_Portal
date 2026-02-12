@@ -1,7 +1,9 @@
+"use server"
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { extendSession, inValidSession, validationSessionAndGetUser } from "./session/auth.session";
+import { extendSession, isValidSession, validationSessionAndGetUser } from "./session/auth.session";
 import { CreateServer } from "../utils/db";
+import { EmployerTable } from "../model/schema";
 
 
 export const getCurrentuser = cache(async()=>{
@@ -16,9 +18,9 @@ export const getCurrentuser = cache(async()=>{
     const now = Date.now();
     const expiresAt = user.sessionData.expiresAt.getTime();
     if(now >= expiresAt) {
-        const id = await inValidSession(user.sessionData.id);
-        console.log("id", id)
-        return null 
+        const id = await isValidSession(user.sessionData.id);
+        // console.log("id", id)
+        return null;
     }
 
     const fifteenDays = 15*24*60*60*1000;
@@ -28,6 +30,11 @@ export const getCurrentuser = cache(async()=>{
     if(timeSinceLastVisit <= fifteenDays){
         await extendSession(user.sessionData.id)
     }
-
     return user;
-})
+});
+
+
+export const getEmployerProfileData = async()=>{
+    const user = await getCurrentuser();
+    return await EmployerTable.findOne({userId: user?.user._id});
+}
