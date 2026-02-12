@@ -18,7 +18,7 @@ const EmployerSetting = async() => {
       location: employerData.location,
       websiteUrl: employerData.websiteUrl,
       yearOfEstablishment: employerData.yearOfEstablishment?.toString(),
-      avatarUrl:employerData.userData?.avatarUrl,
+      avatarUrl:employerData.user.user?.avatarUrl,
     }} />
     </div>
   )
