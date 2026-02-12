@@ -52,12 +52,11 @@ export const employerUpdateProfileAction = async (data: employerProfileSchemaDat
 export const employerDetails = async()=>{
     const user = await getCurrentuser();
     const employer =  await EmployerTable.findOne({userId: user?.user._id}).populate("userId").lean();
-    const userData = employer.userId
     return {
         ...employer,
         _id: employer?._id.toString(),
         userId: employer?.userId.toString(),
-        userData
+        user
     };
 }
 

@@ -36,5 +36,6 @@ export const getCurrentuser = cache(async()=>{
 
 export const getEmployerProfileData = async()=>{
     const user = await getCurrentuser();
+    console.log("user settting", user)
     return await EmployerTable.findOne({userId: user?.user._id});
 }
