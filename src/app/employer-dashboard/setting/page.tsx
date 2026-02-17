@@ -5,7 +5,6 @@ import React from 'react'
 
 const EmployerSetting = async() => {
     const employerData = await employerDetails();
-    console.log("employerData", employerData)
   return (
     <div className='p-4'>
     <EmployerSettingForms initialData={{
@@ -24,4 +23,4 @@ const EmployerSetting = async() => {
   )
 }
 
-export default EmployerSetting
+export default EmployerSetting;

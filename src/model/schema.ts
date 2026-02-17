@@ -129,3 +129,66 @@ const EmployerSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 export const EmployerTable = mongoose.models.EmployerTable || mongoose.model("EmployerTable", EmployerSchema)
+
+
+
+
+const JobPostSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    employerId: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    tags: {
+        type: String,
+    },
+    minSalary: {
+        type: Number,
+    },
+    minEducation: {
+        type: String,       
+    },
+    maxSalary: {
+        type: Number,
+        required: true,
+    },
+    currency: {
+        type: String,
+    },
+    period: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    jobType: {
+        type: String,
+        required: true,
+    },
+    workType: {
+        type: String,
+        required: true,
+    },
+    jobLevel: {
+        type: String,
+        required: true,
+    },
+    experience: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: String,
+        required: true,
+    }
+})
+
+
+export const JobPostTable = mongoose.models.JobPostTable || mongoose.model("JobPostTable", JobPostSchema);

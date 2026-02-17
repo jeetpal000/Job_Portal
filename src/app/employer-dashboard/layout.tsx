@@ -20,7 +20,7 @@ export default async function RootLayout({
     const user = await getCurrentuser();
     if(!user) return redirect("/login");
     // console.log("users",user)
-    if(user?.user?.role!== "employer") return redirect("/dashboard")
+    if(user?.user?.role!== "employer") return redirect("/dashboard");
 
   return (
     <>

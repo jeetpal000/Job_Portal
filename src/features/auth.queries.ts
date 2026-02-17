@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { cache } from "react";
 import { extendSession, isValidSession, validationSessionAndGetUser } from "./session/auth.session";
 import { CreateServer } from "../utils/db";
-import { EmployerTable } from "../model/schema";
+import { EmployerTable, JobPostTable } from "../model/schema";
 
 
 export const getCurrentuser = cache(async()=>{
@@ -38,4 +38,11 @@ export const getEmployerProfileData = async()=>{
     const user = await getCurrentuser();
     console.log("user settting", user)
     return await EmployerTable.findOne({userId: user?.user._id});
+}
+
+export const getMyJobs = async()=>{
+    const user = await getCurrentuser()
+
+    const result = await JobPostTable.find({employerId: user?.user?._id}).lean();
+    return result
 }

@@ -109,7 +109,6 @@ const EmployerSettingForms = ({initialData}: {
         <div className="">
           <Field>
             <FieldLabel htmlFor="textarea-message">Company Description *</FieldLabel>
-            <FieldDescription></FieldDescription>
             <Textarea id="textarea-message" required placeholder="Type your message here."
               {...register("description")}
             />
