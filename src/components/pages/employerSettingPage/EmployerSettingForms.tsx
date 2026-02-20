@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Input } from '../../ui/input';
 import { Button } from '../../ui/button';
 import { Textarea } from '../../ui/textarea';
-import { Field, FieldDescription, FieldLabel } from '../../ui/field';
+import { Field, FieldLabel } from '../../ui/field';
 import {
   Select,
   SelectContent,
@@ -155,15 +155,6 @@ const EmployerSettingForms = ({initialData}: {
 
         <div className="grid grid-cols-2 gap-3">
 
-
-          {/* 
-    <Calendar
-      // mode="single"
-      // selected={date}
-      // onSelect={setDate}
-      // className="rounded-lg border"
-      // captionLayout="dropdown"
-    /> */}
           <div className="">
             <Label htmlFor='yearOfEstablishment'>Year of Establishment *</Label>
             <Input
