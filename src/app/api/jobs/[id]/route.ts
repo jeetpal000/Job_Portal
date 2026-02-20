@@ -1,12 +1,14 @@
 import { JobPostTable } from "@/src/model/schema";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { CreateServer } from "@/src/utils/db";
 
 export async function GET(
   req: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
+    await CreateServer();
     // Next.js 16 requires await here
     const { id } = await context.params;
 
