@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { getCurrentuser } from "@/src/features/auth.queries";
 import { redirect } from "next/navigation";
 import EmployerSideBar from "@/src/components/pages/employerSideBar/EmployerSideBar";
-import Header from "@/src/components/pages/header/Header";
 
 
 

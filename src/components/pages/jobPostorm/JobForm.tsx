@@ -21,12 +21,16 @@ import { JOB_LEVEL, JOB_TYPE, MIN_EDUCATION, SALARY_CURRENCY, SALARY_PERIOD, WOR
 import { jobPostAction } from './jobAction';
 import { toast } from 'sonner';
 import { Loader } from 'lucide-react';
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+
 
 
 
 const JobForm = () => {
+  const searchParams = useSearchParams(); const jobId = searchParams?.get("id");
 
-  const { register, handleSubmit, control, setValue, watch, formState: { errors, isSubmitting, isDirty
+  const { register, handleSubmit, control, setValue, formState: { errors, isSubmitting, isDirty
   } } = useForm<jobPostSchemaData>({
     resolver: zodResolver(jobPostSchema),
   });
@@ -34,7 +38,7 @@ const JobForm = () => {
 
 
   const handleFormSubmit = async (data: jobPostSchemaData) => {
-    const result = await jobPostAction(data);
+    const result = await jobPostAction(data, jobId);
     console.log("result", result)
     toast.success(result?.message, {
       position: "top-right", onAutoClose() {
@@ -43,6 +47,20 @@ const JobForm = () => {
     })
     // console.log(data)
   };
+
+
+  useEffect(() => {
+  if (jobId) {
+    fetch(`/api/jobs/${jobId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        Object.keys(data).forEach((key) => {
+          setValue(key as keyof jobPostSchemaData, data[key]);
+        });
+      });
+  }
+}, [jobId, setValue]);
+
 
 
   return (
@@ -153,10 +171,10 @@ const JobForm = () => {
             <FieldLabel htmlFor="textarea-message">Min Salary<span className='text-xs'>(Optional)</span></FieldLabel>
             <Input
               id="company"
-              type="text"
+              type="number"
               placeholder="e.g. 50000"
               required
-              {...register("minSalary")}
+              {...register("minSalary", {valueAsNumber: true})}
             />
           </Field>
           {errors.minSalary && (
@@ -166,10 +184,10 @@ const JobForm = () => {
             <FieldLabel htmlFor="textarea-message">Max Salary <span className='text-xs'>(Optional)</span></FieldLabel>
             <Input
               id="company"
-              type="text"
+              type="number"
               placeholder="e.g. 800000"
               required
-              {...register("maxSalary")}
+              {...register("maxSalary", {valueAsNumber: true})}
             />
           </Field>
           {errors.maxSalary && (
@@ -232,7 +250,7 @@ const JobForm = () => {
               id="date"
               type="date"
               placeholder='mm/dd/yyyy'
-              {...register("date")}
+              {...register("date",{valueAsDate: true})}
             />
           </Field>
           {errors.date && (

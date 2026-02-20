@@ -2,16 +2,11 @@
 import EmployerAllJob from '@/src/components/pages/employerAllJob/EmployerAllJob';
 import { getMyJobs, } from '@/src/features/auth.queries';
 
-interface Job{
-  _id: string,
-  title: string,
-  location: string
-}
+
 
 
 const MyJobs = async() => {
 const allJob = await getMyJobs();
-console.log(allJob)
 
   return (
     <div className="">

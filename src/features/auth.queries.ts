@@ -44,5 +44,10 @@ export const getMyJobs = async()=>{
     const user = await getCurrentuser()
 
     const result = await JobPostTable.find({employerId: user?.user?._id}).lean();
-    return result
+    const plainJobs = result.map(job=>({
+        ...job,
+        _id: job._id.toString(),
+        date: job.date
+    }))
+    return plainJobs
 }

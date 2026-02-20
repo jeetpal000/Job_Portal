@@ -122,21 +122,11 @@ export const jobPostSchema = z.object({
         .string()
         .trim(),
     minSalary: z
-        .string()
-        .trim()
-        .regex(/^\d+$/, "Minimum salary must be a valid number")
-        .optional()
-        .or(z.literal(""))
-        .transform((v)=>(v==="" ? null: Number(v)))
-        .nullable(),
+        .number()
+        .optional(),
     maxSalary: z
-       .string()
-        .trim()
-        .regex(/^\d+$/, "Minimum salary must be a valid number")
-        .optional()
-        .or(z.literal(""))
-        .transform((v)=>(v==="" ? null: Number(v)))
-        .nullable(),
+       .number()
+        .optional(),
     currency: z
         .enum(SALARY_CURRENCY),
     period: z
@@ -144,27 +134,8 @@ export const jobPostSchema = z.object({
     minEducation: z
         .enum(MIN_EDUCATION),
     date: z
-        .string()
-        .trim()
-        .optional()
-        .or(z.literal(""))
-        .transform((v)=>(!v||v ===""?null:v))
-        .pipe(
-            z.string()
-            .regex(/^\d{4}-\d{2}-\d{2}$/, "Please enter a valid date(YYYY-MM-DD)")
-            .refine(
-                (date)=>{
-                    const expiryDate = new Date(date);
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    return expiryDate>= today
-                },"Expiry date must be today or in the future"
-            )
-            .transform((date)=>new Date(date))
-            .nullable()
-        )
-        .nullable()
-        ,
+        .date()
+        .optional(),
     experience: z
         .string()
         .trim(),
