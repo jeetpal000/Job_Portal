@@ -25,7 +25,6 @@ export const getCurrentuser = cache(async()=>{
 
     const fifteenDays = 15*24*60*60*1000;
     const timeSinceLastVisit = now-user.sessionData.updatedAt.getTime();
-    // console.log(fifteenDays, timeSinceLastVisit)
 
     if(timeSinceLastVisit <= fifteenDays){
         await extendSession(user.sessionData.id)
@@ -50,4 +49,18 @@ export const getMyJobs = async()=>{
         date: job.date
     }))
     return plainJobs
+}
+
+
+export const getAllJobs = async()=>{
+    await CreateServer();
+    await  getCurrentuser();
+    const getAllJobs = await JobPostTable.find().lean();
+
+    const plainJobs = getAllJobs.map(job=>({
+        ...job,
+        _id: job._id.toString(),
+        date: job.date,
+    }))
+    return plainJobs;    
 }

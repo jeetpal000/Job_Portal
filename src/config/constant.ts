@@ -36,3 +36,7 @@ export const MIN_EDUCATION = [
     'masters',
     "phd"
 ] as const;
+
+
+
+export const COUNTRY_NAME = ["India", "China", "America", "Russia",] as const

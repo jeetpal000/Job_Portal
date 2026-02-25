@@ -6,7 +6,7 @@ import EmployerSideBar from "@/src/components/pages/employerSideBar/EmployerSide
 
 
 export const metadata: Metadata = {
-  title: "Job Portal App",
+  title: "Job | Portal | App | Employer-Dashboard",
   description: "Job Portal App Full Stack Project",
 };
 

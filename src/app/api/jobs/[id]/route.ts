@@ -9,7 +9,6 @@ export async function GET(
 ) {
   try {
     await CreateServer();
-    // Next.js 16 requires await here
     const { id } = await context.params;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {

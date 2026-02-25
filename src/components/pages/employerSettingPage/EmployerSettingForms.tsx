@@ -22,21 +22,21 @@ import { Loader } from 'lucide-react';
 import { UploadButton } from '@/src/utils/uploadthing';
 import Image from 'next/image';
 
-const organisationTypeOptions = [ "Developer",  "Video editor",  "Business",  "Design"]
+const organisationTypeOptions = ["Developer", "Video editor", "Business", "Design"]
 const teamSizeOptions = [{ type: "Just me" }, { type: "2-10 employees" }, { type: "11-50 employees" }, { type: "51-200 employees" }, { type: "201-500 employees" }, { type: "501-1000 employees" }, { type: "1001+ employees" }];
 
 
 
 
 
-const EmployerSettingForms = ({initialData}: {
+const EmployerSettingForms = ({ initialData }: {
   initialData?: Partial<employerProfileSchemaData>
 }) => {
   const [isUploading, setIsUploading] = useState(false);
-  const { register, handleSubmit, control, setValue, watch, formState: {errors, isSubmitting, isDirty
-   } } = useForm<employerProfileSchemaData>({
+  const { register, handleSubmit, control, setValue, watch, formState: { errors, isSubmitting, isDirty
+  } } = useForm<employerProfileSchemaData>({
     resolver: zodResolver(employerProfileSchema),
-    defaultValues:{
+    defaultValues: {
       username: initialData?.username || "",
       description: initialData?.description || "",
       email: initialData?.email || "",
@@ -46,22 +46,24 @@ const EmployerSettingForms = ({initialData}: {
       yearOfEstablishment: initialData?.yearOfEstablishment || "",
       websiteUrl: initialData?.websiteUrl || "",
       location: initialData?.location || "",
-      avatarUrl: initialData?.avatarUrl ||""
+      avatarUrl: initialData?.avatarUrl || ""
     }
   });
 
   const avatarUrl = watch("avatarUrl");
 
-  const handleRemoveProfile = ()=>{
+  const handleRemoveProfile = () => {
     setValue("avatarUrl", "");
   }
 
   const handleFormSubmit = async (data: employerProfileSchemaData) => {
-   const result =  await employerUpdateProfileAction(data);
+    const result = await employerUpdateProfileAction(data);
     console.log("result", result)
-    toast.success(result?.message, {position: "top-right", onAutoClose() {
-      
-    },})
+    toast.success(result?.message, {
+      position: "top-right", onAutoClose() {
+
+      },
+    })
     // console.log(result)
   };
 
@@ -79,9 +81,9 @@ const EmployerSettingForms = ({initialData}: {
             className=''
           />
         </div>
-         {errors.username && (
-                <p className='text-sm text-destructive'>{errors.username.message}</p>
-              )}
+        {errors.username && (
+          <p className='text-sm text-destructive'>{errors.username.message}</p>
+        )}
         <div className="">
           <label htmlFor="email">email</label>
           <Input
@@ -92,9 +94,9 @@ const EmployerSettingForms = ({initialData}: {
             {...register("email")}
           />
         </div>
-         {errors.email && (
-            <p className='text-sm text-destructive'>{errors.email.message}</p>
-          )}
+        {errors.email && (
+          <p className='text-sm text-destructive'>{errors.email.message}</p>
+        )}
         <div className="">
           <label htmlFor="company">Company</label>
           <Input
@@ -105,7 +107,7 @@ const EmployerSettingForms = ({initialData}: {
             {...register("companyname")}
           />
         </div>
-        
+
         <div className="">
           <Field>
             <FieldLabel htmlFor="textarea-message">Company Description *</FieldLabel>
@@ -114,16 +116,16 @@ const EmployerSettingForms = ({initialData}: {
             />
           </Field>
         </div>
-            {errors.description && (
-                <p className='text-sm text-destructive'>{errors.description.message}</p>
-              )}
+        {errors.description && (
+          <p className='text-sm text-destructive'>{errors.description.message}</p>
+        )}
         <div className="grid grid-cols-2 gap-3">
 
           <div className="">
             <Label htmlFor='organisationType'>Organisation Type *</Label>
-            <Controller name="organisationType" control={control} rules={{ required: true }} render={({ field }) => (<Select onValueChange={field.onChange} value={field.value} required> <SelectTrigger className="w-full">
+            <Controller name="organisationType" control={control} rules={{ required: true }} render={({ field }) => (<Select onValueChange={field.onChange} value={field.value} required> <SelectTrigger className="w-full hover:border-blue-500 ">
               <SelectValue placeholder="Select organisation type" /> </SelectTrigger>
-              <SelectContent>
+              <SelectContent className=''>
                 <SelectGroup>
                   {organisationTypeOptions.map((type) => (
                     <SelectItem key={type} value={type}>{type}</SelectItem>
@@ -135,7 +137,7 @@ const EmployerSettingForms = ({initialData}: {
 
           <div className="">
             <Label htmlFor='teamSize'>Team Size *</Label>
-            <Controller name="teamSize" control={control} rules={{ required: true }} render={({ field }) => (<Select onValueChange={field.onChange} value={field.value} required> <SelectTrigger className="w-full">
+            <Controller name="teamSize" control={control} rules={{ required: true }} render={({ field }) => (<Select onValueChange={field.onChange} value={field.value} required> <SelectTrigger className="w-full hover:border-blue-500 ">
               <SelectValue placeholder="Select organisation type" /> </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -146,7 +148,7 @@ const EmployerSettingForms = ({initialData}: {
               </SelectContent>
             </Select>)} />
           </div>
-           
+
 
 
 
@@ -186,54 +188,54 @@ const EmployerSettingForms = ({initialData}: {
           />
         </div>
 
-        
 
-         {avatarUrl ?(
-        <div className="">
+
+        {avatarUrl ? (
           <div className="">
+            <div className="">
 
-  <Image
-    src={avatarUrl}
-    width={200}
-    height={200}
-    alt="Profile picture"
-    className='rounded-md shadow-[3px_3px_15px_#fff] hover:scale-[1.2] transition-all duration-100'
-    />
-    </div>
-    <Button onClick={handleRemoveProfile}>Remove Profile</Button>
-        </div>
-):(<div className=" pb-10">
-           <UploadButton className='bg-[#ffffff2b] mx-auto px-2 rounded backdrop-blur-2xl'
-        endpoint="imageUploader"
-        onUploadBegin={()=>setIsUploading(true)}
-        onClientUploadComplete={(res) => {
-          // Do something with the response
-          const profilePic = res[0];
-          setValue("avatarUrl", profilePic.ufsUrl, {
-            shouldDirty: true,
-          });
-          toast.success("Image Uploaded");
-          setIsUploading(false);
-        }}
-        onUploadError={(error: Error) => {
-          // Do something with the error.
-          
-          toast.error(`Upload Failed: ${error.message}`);
-          setIsUploading(false);
-        }}
-      />
+              <Image
+                src={avatarUrl}
+                width={200}
+                height={200}
+                alt="Profile picture"
+                className='rounded-md shadow-[3px_3px_15px_#fff] hover:scale-[1.2] transition-all duration-100'
+              />
+            </div>
+            <Button onClick={handleRemoveProfile}>Remove Profile</Button>
+          </div>
+        ) : (<div className=" pb-10">
+          <UploadButton className='bg-[#ffffff2b] mx-auto px-2 rounded backdrop-blur-2xl'
+            endpoint="imageUploader"
+            onUploadBegin={() => setIsUploading(true)}
+            onClientUploadComplete={(res) => {
+              // Do something with the response
+              const profilePic = res[0];
+              setValue("avatarUrl", profilePic.ufsUrl, {
+                shouldDirty: true,
+              });
+              toast.success("Image Uploaded");
+              setIsUploading(false);
+            }}
+            onUploadError={(error: Error) => {
+              // Do something with the error.
+
+              toast.error(`Upload Failed: ${error.message}`);
+              setIsUploading(false);
+            }}
+          />
         </div>)}
 
 
 
         <div className="absolute transform -translateX-1/2  -translateY-1/2 bottom-0 left-1/3 pb-4 flex">
           <Button className='cursor-pointer' type='submit'
-          disabled={isUploading || isSubmitting}
+            disabled={isUploading || isSubmitting}
           >
-            {isSubmitting&& <Loader className='w-4 h-4 animate-spin' />}
-            {isSubmitting? "Saving Changes...": "Save Changes"}
+            {isSubmitting && <Loader className='w-4 h-4 animate-spin' />}
+            {isSubmitting ? "Saving Changes..." : "Save Changes"}
           </Button>
-          {!isDirty&&(<p className='text-muted-foreground text-xs'>No changes to save</p>)}
+          {!isDirty && (<p className='text-muted-foreground text-xs'>No changes to save</p>)}
         </div>
       </form>
     </div>

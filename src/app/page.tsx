@@ -1,25 +1,35 @@
 import React from 'react'
 import { getCurrentuser } from '../features/auth.queries';
 import Link from 'next/link';
-import Header from '../components/pages/header/Header';
+import Header from '../components/pages/HomePage/homePageHeader/Header';
+import LandingPage from '../components/pages/HomePage/landingPage/LandingPage';
+import MostPopularVcancy from '../components/pages/HomePage/mostPopularVacancy/MostPopularVcancy';
+import HowToWork from '../components/pages/HomePage/howToWork/HowToWork';
+import PopularCategory from '../components/pages/HomePage/popularCategory/PopularCategory';
+import FeatureJb from '../components/pages/HomePage/FeatureJob/FeatureJb';
+import TopCompanies from '../components/pages/HomePage/topCompanies/TopCompanies';
+import ClientsTestimonial from '../components/pages/HomePage/clientsTestimonial/ClientsTestimonial';
+import RegisterCard from '../components/pages/HomePage/RegisterCard/RegisterCard';
+import Footer from '../components/pages/HomePage/fooer/Footer';
+
 
 const page = async () => {
 
   const user = await getCurrentuser();
-  // console.log("user", user)
+
 
   return (
-    <main className='bg-linear-60 from-[gray] via-[pink] to-[orange] w-full h-screen '>
+    <main className='max-w-360 mx-auto bg-[#e8e8e8]'>
       <Header />
-    <div className='flex items-center justify-center flex-col'>
-      <p className='justify-start font-bold'>
-        email:  {user?.user.email}
-      </p>
-      <p className='justify-start font-bold'>
-        name:  {user?.user.name}
-      </p>
-      <Link href={"/dashboard"}>Dashboard</Link>
-    </div>
+      <LandingPage />
+      <MostPopularVcancy />
+      <HowToWork />
+      <PopularCategory />
+      <FeatureJb />
+      <TopCompanies />
+      <ClientsTestimonial />
+      <RegisterCard />
+      <Footer />
     </main>
   )
 }
