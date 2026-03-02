@@ -28,7 +28,8 @@ import { useSearchParams } from 'next/navigation';
 
 
 const JobForm = () => {
-  const searchParams = useSearchParams(); const jobId = searchParams?.get("id");
+  const searchParams = useSearchParams(); 
+  const jobId = searchParams?.get("id");
 
   const { register, handleSubmit, control, setValue, formState: { errors, isSubmitting, isDirty
   } } = useForm<jobPostSchemaData>({
@@ -45,7 +46,6 @@ const JobForm = () => {
 
       },
     })
-    // console.log(data)
   };
 
 
@@ -269,7 +269,7 @@ const JobForm = () => {
           </Field>
           {errors.experience && (
             <p className='text-sm text-destructive'>{errors.experience.message}</p>
-          )}
+          )} 
         </div>
         <div className="">
           <Field>

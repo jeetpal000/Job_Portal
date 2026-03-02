@@ -5,14 +5,14 @@ import Image from 'next/image'
 const LandingPage = () => {
   return (
     <main className="w-full p-2 pb-10">
-      <section className="flex justify-between items-center pt-10 w-full">
-        <aside className='flex flex-col w-[60%]'>
-          <h1 className="lg:text-7xl md:text-5xl sm:text-3xl xs:text-2xl font-bold ">
+      <section className="flex flex-col sm:flex-col md:flex-row justify-between items-center pt-10 w-full ">
+        <aside className='flex flex-col md:w-[60%]'>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold ">
             Find a job that suits your interest & skills.
           </h1>
           <p className="text-[#6d6d6d] py-6">Aliquam vitae turpis in diam convallis finibus in at risus. Nullam in scelerisque leo, eget sollicitudin velit bestibulum.</p>
           <div className="lg:flex lg:border-3 border-[#bcbabad0] rounded-md lg:items-center lg:justify-between lg:p-2  md:flex-wrap md:items-start md:justify-start md:border-0  focus-within:border-blue-500 focus-within:rounded-full group">
-            <div className="flex items-center justify-center gap-1 border-2 border-blue-200 focus:border-blue-500 rounded-md w-fit lg:border-0">
+            <div className="flex items-center justify-center gap-1 border-2 border-blue-200 focus:border-blue-500 rounded-md w-[90%] md:w-fit lg:border-0">
               <Search className='text-blue-600' />
               <input
                 type="text"
@@ -20,7 +20,7 @@ const LandingPage = () => {
                 className="outline-0 border-0 text-xl"
               />
              </div>
-            <div className="flex items-center justify-center gap-1 border-2 border-blue-200 rounded-md w-fit lg:border-l-2 lg:border-t-0 lg:border-b-0 lg:border-r-0 lg:rounded-none lg:border-[#c2c2c2]">
+            <div className="flex items-center justify-center gap-1 border-2 border-blue-200 rounded-md w-[90%] md:w-fit lg:border-l-2 lg:border-t-0 lg:border-b-0 lg:border-r-0 lg:rounded-none  lg:border-[#c2c2c2]">
               <MapPin className='text-blue-600' />
               <input
                 type="text"
@@ -28,7 +28,7 @@ const LandingPage = () => {
                 className="outline-0 border-0 text-xl "
               />
             </div>
-            <div className="flex items-center justify-center gap-1 w-fit">
+            <div className="flex items-center justify-center gap-1 w-full md:w-fit">
               <Button className='bg-blue-500 text-xl group-focus-within:rounded-full transition duration-0'>Find Job</Button>
             </div>
           </div>
@@ -47,30 +47,30 @@ const LandingPage = () => {
       </section>
       <section className='grid lg:grid-cols-4 md:grid-cols-4 sm: grid-cols-2 xs:grid-cols-2 gap-4 mx-auto '>
         <div className="flex items-center justify-center gap-3 bg-blue-200 py-5 rounded-md">
-          <BriefcaseBusiness className='text-blue-600 w-15 h-15' />
+          <BriefcaseBusiness className='text-blue-600 w-10 h-10 lg:w-15 lg:h-15' />
           <div className="">
-            <h1 className="text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
+            <h1 className="text-xl md:text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
             <p className="">Live Job</p>
           </div>
         </div>
         <div className="flex items-center justify-center gap-3 bg-blue-200 p-4 rounded-md">
-          <Building2 className='text-blue-600 w-15 h-15' />
+          <Building2 className='text-blue-600 h-10 w-10 lg:w-15 lg:h-15' />
           <div className="">
-            <h1 className="text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
+            <h1 className=" text-xl md:text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
             <p className="">Live Job</p>
           </div>
         </div>
         <div className="flex items-center justify-center gap-3 bg-blue-200 p-4 rounded-md">
-          <UsersRound className='text-blue-600 w-15 h-15' />
+          <UsersRound className='text-blue-600 h-10 w-10 lg:w-15 lg:h-15' />
           <div className="">
-            <h1 className="text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
+            <h1 className="text-xl md:text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
             <p className="">Live Job</p>
           </div>
         </div>
         <div className="flex items-center justify-center gap-3 bg-blue-200 p-4 rounded-md">
-          <BriefcaseBusiness className='text-blue-600 w-15 h-15' />
+          <BriefcaseBusiness className='text-blue-600 h-10 w-10 lg:w-15 lg:h-15' />
           <div className="">
-            <h1 className="text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
+            <h1 className="text-xl lg:text-2xl font-bold">{(175324).toLocaleString("en-IN")}</h1>
             <p className="">Live Job</p>
           </div>
         </div>

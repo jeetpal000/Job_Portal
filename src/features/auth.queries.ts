@@ -42,25 +42,45 @@ export const getEmployerProfileData = async()=>{
 export const getMyJobs = async()=>{
     const user = await getCurrentuser()
 
-    const result = await JobPostTable.find({employerId: user?.user?._id}).lean();
+    const result = await JobPostTable.find({postedBy: user?.user?._id}).lean();
     const plainJobs = result.map(job=>({
         ...job,
         _id: job._id.toString(),
         date: job.date
-    }))
-    return plainJobs
+    }));
+    return plainJobs;
 }
+export const getAllJobs = async () => {
+  await CreateServer();
+  const user = await getCurrentuser();
 
+  const jobs = await JobPostTable.find()
+    .populate({ path: "postedBy", select: "-userId" })
+    .populate({ path: "userId", select: "-password -__v" })
+    .lean();
 
-export const getAllJobs = async()=>{
-    await CreateServer();
-    await  getCurrentuser();
-    const getAllJobs = await JobPostTable.find().lean();
+  // Convert ObjectId and Date to string
+  const safeJobs = jobs.map(job => ({
+    ...job,
+    _id: job._id.toString(),
+    date: job.date?.toISOString(),
+    postedBy: job.postedBy
+      ? {
+          ...job.postedBy,
+          _id: job.postedBy._id.toString(),
+          createdAt: job.postedBy.createdAt?.toISOString(),
+          updatedAt: job.postedBy.updatedAt?.toISOString(),
+        }
+      : null,
+    userId: job.userId
+      ? {
+          ...job.userId,
+          _id: job.userId._id.toString(),
+          createdAt: job.userId.createdAt?.toISOString(),
+          updatedAt: job.userId.updatedAt?.toISOString(),
+        }
+      : null,
+  }));
 
-    const plainJobs = getAllJobs.map(job=>({
-        ...job,
-        _id: job._id.toString(),
-        date: job.date,
-    }))
-    return plainJobs;    
-}
+  return safeJobs;
+};

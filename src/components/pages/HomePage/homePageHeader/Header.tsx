@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "../../../ui/select"
 import { COUNTRY_NAME } from '@/src/config/constant';
-import { Input } from '../../../ui/input';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/src/lib/utils';
 import { useState } from 'react';
@@ -87,8 +86,8 @@ const Header = () => {
         <div className="flex items-center gap-3">
           {/* Logo */}
           <div className="flex items-center gap-1">
-            <BriefcaseBusiness className='text-blue-600' />
-            <span className='font-bold lg:text-2xl xs:text-xl'>Jobpilot</span>
+            <BriefcaseBusiness className='text-blue-600 w-10 h-10 lg:h-15 lg:w-15' />
+            <span className='font-bold lg:text-3xl text-2xl'>Jobpilot</span>
           </div>
 
           {/* Search bar (hidden on small screens) */}
@@ -121,7 +120,7 @@ const Header = () => {
           <div className="sm:hidden pl-10">
             <button 
               onClick={() => setShowSearch(true)} 
-              className="p-2 rounded-full border border-gray-300 hover:bg-gray-200 cursor-pointer scale-105"
+              className="p-2 rounded-full border border-gray-300 hover:bg-gray-200 active:bg-blue-400 cursor-pointer scale-105"
             >
               <Search className="w-5 h-5 text-blue-600" />
             </button>
@@ -143,7 +142,7 @@ const Header = () => {
       {/* Overlay search bar for small devices */}
       {showSearch && (
         <div className="fixed top-10 left-0 w-full bg-white shadow-md hover:shadow-2xl z-50 p-3 transition-transform duration-300 ease-in-out">
-          <div className="flex items-center border-2 border-gray-400 rounded focus-within:border-blue-500 focus-within:rounded-full">
+          <div className="flex items-center border-2 border-gray-400 rounded focus-within:border-blue-500 focus-within:rounded-full focus-within:shadow-xl">
             <Controller name="country" control={control} rules={{ required: true }} render={({ field }) => (
               <Select onValueChange={field.onChange} value={field.value} required>
                 <SelectTrigger className="rounded-none border-0 border-r-2 ">

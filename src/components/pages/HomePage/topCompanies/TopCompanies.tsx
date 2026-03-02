@@ -5,11 +5,11 @@ import Image from 'next/image'
 const TopCompanies = () => {
   return (
     <section className="bg-[white] py-10 px-2">
-      <div className="flex justify-between items-center">
-        <h1 className="lg:text-4xl md:text-3xl sm:text-2xl xs:text-xl font-bold tracking-wide pb-5">
+      <div className="flex justify-between items-center border-b border-[#bababaa2] mb-2 shadow-xl">
+        <h1 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl  font-bold tracking-wide pb-5">
           Top Companies
         </h1>
-        <Button className='bg-transparent border-2 text-blue-600 flex gap-1 hover:gap-3 hover:bg-transparent hover:shadow-xl'>View All <ArrowBigRightDash /></Button>
+        <Button className='bg-transparent border-2 text-blue-600 flex gap-1 hover:gap-3 active:gap-3 hover:bg-transparent hover:shadow-xl'>View All <ArrowBigRightDash /></Button>
       </div>
       <div className='grid lg:grid-cols-4 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-3'>
             {/* {

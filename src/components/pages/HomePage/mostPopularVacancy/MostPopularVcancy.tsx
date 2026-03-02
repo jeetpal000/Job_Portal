@@ -2,7 +2,7 @@
 const MostPopularVcancy = () => {
   return (
     <section className="bg-[white] py-10 pt-5">
-      <h1 className="lg:text-5xl md:text-4xl sm:text-3xl xs:text-2xl font-bold tracking-wide pb-5 px-2">
+      <h1 className=" text-2xl sm:text-3xl md:text-4xl lg:text-5xl   font-bold tracking-wide pb-5 px-2  border-b border-[#bababaa2] mb-2 shadow-md">
         Most Popular Vacancies
       </h1>
       <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 mx-auto place-items-center">

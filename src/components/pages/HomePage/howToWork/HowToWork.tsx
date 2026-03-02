@@ -5,7 +5,7 @@ import React from 'react'
 const HowToWork = () => {
   return (
    <section className="py-10 overflow-hidden">
-    <h1 className="lg:text-5xl md:text-4xl sm:text-3xl xs:text-2xl font-bold tracking-wide text-center pb-5 mx-auto">How to Jobpilot work</h1>
+    <h1 className="lg:text-5xl md:text-4xl sm:text-3xl text-2xl font-bold tracking-wide text-center pb-5 mx-auto  border-b border-[#bababaa2] mb-2 shadow-md">How to Jobpilot work</h1>
     <div className="grid grid-rows-4 place-items-center lg:grid-cols-4 lg:grid-rows-none xl:grid-rows-none xl:grid-cols-4">
       <div className="max-w-60 shadow-2xl rounded-md p-2 relative">
         <div className="flex flex-col items-center justify-center">
@@ -13,7 +13,7 @@ const HowToWork = () => {
           <h3 className="text-xl font-bold pt-5">Create account</h3>
           <p className="text-muted-foreground">Aliquam facilisis egestas sapien, nec tempor leo tristique at</p>
         </div>
-      <div className="absolute lg:w-full xl:w-full lg:h-20 xl:h-20 xl:-top-20 lg:-top-15 xl:rotate-0 lg:rotate-0 lg:left-40 z-1 lg:h-36 xl:h-44 top-10 rotate-90 left-39 h-50 w-50 ">
+      <div className="absolute lg:w-full xl:w-full  xl:-top-20 lg:-top-15 xl:rotate-0 lg:rotate-0 lg:left-40 z-1 lg:h-36 xl:h-44 top-10 rotate-90 left-39 h-50 w-50 ">
         <Image
           src="/Arrows.png"
           alt="arrow"
@@ -24,7 +24,7 @@ const HowToWork = () => {
 
       </div>
       <div className="max-w-60 rounded-md shadow-2xs bg-[white] p-2 relative">
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center ">
           <CloudUpload className='bg-[#0077ff] p-2 w-15 h-15 rounded-full text-white' />
           <h3 className="text-xl font-bold pt-5">Upload CV/Resume</h3>
           <p className="text-muted-foreground">Curabitur sit amet maximus ligula. Nam a nulla ante. Nam sodales</p>

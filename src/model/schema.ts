@@ -134,11 +134,17 @@ export const EmployerTable = mongoose.models.EmployerTable || mongoose.model("Em
 
 
 const JobPostSchema = new mongoose.Schema({
-    title: {
-        type: String,
+    postedBy:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "EmployerTable",
         required: true,
     },
-    employerId: {
+    userId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserTable",
+        required: true,
+    },
+    title: {
         type: String,
         required: true,
     },
@@ -192,3 +198,4 @@ const JobPostSchema = new mongoose.Schema({
 
 
 export const JobPostTable = mongoose.models.JobPostTable || mongoose.model("JobPostTable", JobPostSchema);
+
