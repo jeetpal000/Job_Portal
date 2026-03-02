@@ -42,18 +42,18 @@ export const getEmployerProfileData = async()=>{
 export const getMyJobs = async()=>{
     const user = await getCurrentuser()
 
-    const result = await JobPostTable.find({postedBy: user?.user?._id}).lean();
+    const result = await JobPostTable.find({userId: user?.user?._id}).select("-postedBy -userId").lean();
     const plainJobs = result.map(job=>({
         ...job,
         _id: job._id.toString(),
-        date: job.date
+        date: job.date?.toISOString(),
     }));
     return plainJobs;
 }
+
+
 export const getAllJobs = async () => {
   await CreateServer();
-  const user = await getCurrentuser();
-
   const jobs = await JobPostTable.find()
     .populate({ path: "postedBy", select: "-userId" })
     .populate({ path: "userId", select: "-password -__v" })

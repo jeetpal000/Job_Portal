@@ -36,6 +36,7 @@ interface EmployerAllJobProps {
 
 
 const EmployerAllJob: React.FC<EmployerAllJobProps> = ({ data }) => {
+    console.log(data)
     const [jobs, setJobs] = useState(data);
     const router = useRouter()
     if (data.length === 0) {
